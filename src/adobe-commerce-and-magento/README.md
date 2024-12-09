@@ -26,4 +26,4 @@ This template will run in a Github Codespace, but is still being developed and h
 
 ---
 
-_Note: This file was auto-generated from the [devcontainer-template.json](https://github.com/doughatcher/devcontainer-templates/blob/main/src/adobe-commerce-and-magento/devcontainer-template.json).  Add additional notes to a `NOTES.md`._
+_Note: This file was auto-generated from the [devcontainer-template.json](https://github.com/BlueAcornInc/devcontainer-templates/blob/main/src/adobe-commerce-and-magento/devcontainer-template.json).  Add additional notes to a `NOTES.md`._
