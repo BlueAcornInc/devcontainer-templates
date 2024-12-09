@@ -26,8 +26,8 @@ jobs:
         uses: devcontainers/ci@v0.3
 
         with:
-          imageName: ghcr.io/doughatcher/devcontainer-templates
-          cacheFrom: ghcr.io/doughatcher/devcontainer-templates
+          imageName: ghcr.io/blueacorninc/devcontainer-templates
+          cacheFrom: ghcr.io/blueacorninc/devcontainer-templates
 
           runCmd: |
             export COMPOSER_AUTH=${{ secrets.COMPOSER_AUTH }}

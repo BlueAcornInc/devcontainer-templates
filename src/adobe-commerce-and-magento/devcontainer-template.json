@@ -3,7 +3,7 @@
     "version": "0.1.2",
     "name": "Adobe Commerce and Magento",
     "description": "Run and manage Adobe Commerce and Magento Open Source projects",
-    "documentationURL": "https://github.com/doughatcher/devcontainer-templates/tree/main/src/commerce",
+    "documentationURL": "https://github.com/blueacorninc/devcontainer-templates/tree/main/src/commerce",
     "publisher": "doug@hatcher.ltd",
     "licenseURL": "https://github.com/devcontainers/templates/blob/main/LICENSE",
     "options": {
