@@ -16,6 +16,8 @@ services:
       TEST_MODE: ${TEST_MODE}
       ENABLE_IMS: ${ENABLE_IMS}
       COMPOSER_AUTH: ${COMPOSER_AUTH}
+      COMPOSER_TOKEN: ${COMPOSER_TOKEN}
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
   db:
     image: ${MYSQL_IMAGE}
     volumes:
