@@ -11,10 +11,13 @@ build-commerce: ## Build the adobe commerce devcontainer
 generate-docs: ## generate docs for each devcontainer
 	devcontainer templates generate-docs -p src/
 
-publish: ## publish all devcontainers
+publish: clean docker-login  ## publish all devcontainers
 	devcontainer templates publish -r ghcr.io -n blueacorninc/devcontainer-templates ./src
 
 ci: build publish ## Build and publish all devcontainers
 
 docker-login: ## performs the correct login to ghcr.io for publishing
 	echo $$GITHUB_TOKEN | docker login ghcr.io -u USERNAME --password-stdin
+
+clean: ## clean files from devcontainers before publishing
+	git clean -Xd -f src/**
