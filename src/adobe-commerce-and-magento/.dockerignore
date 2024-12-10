@@ -1,0 +1,6 @@
+*
+!.devcontainer/**
+!.github/**
+!.devcontainer-template.json
+!NOTES.md
+!README.md

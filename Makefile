@@ -15,3 +15,6 @@ publish: ## publish all devcontainers
 	devcontainer templates publish -r ghcr.io -n blueacorninc/devcontainer-templates ./src
 
 ci: build publish ## Build and publish all devcontainers
+
+docker-login: ## performs the correct login to ghcr.io for publishing
+	echo $$GITHUB_TOKEN | docker login ghcr.io -u USERNAME --password-stdin
