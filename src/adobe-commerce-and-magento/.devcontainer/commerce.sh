@@ -2,8 +2,24 @@
 
 echo "Starting commerce.sh"
 
+function configure_base_url () {
+    local base_url=$1
+    local use_secure=$2
+
+    bin/magento config:set --lock-env web/unsecure/base_url "$base_url"
+    bin/magento config:set --lock-env web/secure/base_url "$base_url"
+
+    bin/magento config:set --lock-env web/secure/use_in_frontend "$use_secure"
+    bin/magento config:set --lock-env web/secure/use_in_adminhtml "$use_secure"
+
+    if [ -n "$CODESPACE_NAME" ]; then
+        bin/magento config:set --lock-env web/url/redirect_to_base 0
+    fi
+}
+
 set -e
 
+: ${PHP_MODE:="builtin"}
 : ${DEPLOY_MODE:="developer"}
 : ${INSTALL_SAMPLE_DATA:="false"}
 : ${COMMERCE_EDITION:="magento/project-enterprise-edition"}
@@ -31,15 +47,20 @@ fi
 if [ "$SKIP_SETUP" != "true" ]
 then
 
-    if [ ! -f composer.json ]; then
-        echo "composer.json not found, running custom command"
-        composer create-project --repository-url=https://repo.magento.com/ $COMMERCE_EDITION ./tmp
-        cp -r ./tmp/* ./ && rm -rf ./tmp
-    fi
+    if [ ! -f app/etc/env.php ]
+        then
 
-    if [ -n "$COMPOSER_REQUIRES" ]; then
-        composer require $COMPOSER_REQUIRES
-    fi
+        if [ ! -f composer.auth ]; then
+
+            composer create-project --repository-url=https://repo.magento.com/ $COMMERCE_EDITION ./tmp
+            mv -r tmp/** .
+        else
+        composer install
+        fi
+
+        if [ -n "$COMPOSER_REQUIRES" ]; then
+            composer require $COMPOSER_REQUIRES
+        fi
 
     composer install
 
@@ -79,8 +100,7 @@ then
             --page-cache-redis-db=1 \
             --page-cache-redis-port=6379
 
-        bin/magento config:set --lock-env web/secure/use_in_frontend $USE_SECURE_URL
-        bin/magento config:set --lock-env web/secure/use_in_adminhtml $USE_SECURE_URL
+
         bin/magento config:set --lock-env web/seo/use_rewrites 1
         bin/magento config:set --lock-env system/full_page_cache/caching_application 1
         bin/magento config:set --lock-env system/full_page_cache/ttl 604800
@@ -93,7 +113,7 @@ then
                 --client-id=$IMS_CLIENT_ID \
                 --client-secret=$IMS_CLIENT_SECRET \
                 --2fa=$IMS_2FA_ENABLED
-        else 
+        else
             bin/magento module:disable Magento_AdminAdobeImsTwoFactorAuth Magento_TwoFactorAuth
         fi
 
@@ -105,8 +125,7 @@ then
             eval "$POST_INSTALL_CMD"
         fi
 
-        bin/magento config:set --lock-env web/unsecure/base_url "$BASEURL"
-        bin/magento config:set --lock-env web/secure/base_url "$BASEURL"
+        configure_base_url $BASEURL $USE_SECURE_URL
 
         if [ -n "$CODESPACE_NAME" ]; then
             bin/magento config:set --lock-env web/url/redirect_to_base 0
@@ -115,6 +134,7 @@ then
         bin/magento deploy:mode:set $DEPLOY_MODE
         bin/magento indexer:reindex
     else
+        configure_base_url $BASEURL $USE_SECURE_URL
         bin/magento setup:upgrade
     fi
 
@@ -133,6 +153,8 @@ if [ -n "$SERVER_CMD" ]; then
     eval "$SERVER_CMD" &
 fi
 
+tail -f var/log/* &
+
 if [ "$PHP_MODE" == "fpm" ]; then
     echo "Running in FPM mode"
     php-fpm --allow-to-run-as-root --nodaemonize
@@ -140,4 +162,3 @@ elif [ "$PHP_MODE" == "builtin" ]; then
     echo "Running in built-in server mode"
     php -S 127.0.0.1:$PORT -t ./pub/ ./phpserver/router.php
 fi
-

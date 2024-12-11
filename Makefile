@@ -6,7 +6,7 @@ help: ## Show this help message
 build: build-commerce ## Build all devcontainers
 
 build-commerce: ## Build the adobe commerce devcontainer
-	devcontainer up --workspace-folder src/adobe-commerce-and-magento --remove-existing-container --build-no-cache
+	devcontainer up --workspace-folder src/adobe-commerce-and-magento --remove-existing-container
 
 generate-docs: ## generate docs for each devcontainer
 	devcontainer templates generate-docs -p src/
@@ -15,3 +15,6 @@ publish: ## publish all devcontainers
 	devcontainer templates publish -r ghcr.io -n doughatcher/devcontainer-templates ./src
 
 ci: build publish ## Build and publish all devcontainers
+
+clean: ## clean filesystem
+	git clean -fdX -e .envrc src/**

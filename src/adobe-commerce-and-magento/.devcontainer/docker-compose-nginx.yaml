@@ -6,3 +6,6 @@ services:
     network_mode: service:magento
     volumes_from:
       - magento
+  magento:
+     environment:
+      PHP_MODE: "fpm"
