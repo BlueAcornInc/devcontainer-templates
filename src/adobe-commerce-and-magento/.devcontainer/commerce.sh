@@ -51,7 +51,7 @@ then
     if [ ! -f composer.json ]; then
 
         composer create-project --repository-url=https://repo.magento.com/ $COMMERCE_EDITION ./tmp
-        mv -r tmp/** .
+        mv tmp/* .
     else
     composer install
     fi
