@@ -47,20 +47,18 @@ fi
 if [ "$SKIP_SETUP" != "true" ]
 then
 
-    if [ ! -f app/etc/env.php ]
-        then
 
-        if [ ! -f composer.auth ]; then
+    if [ ! -f composer.auth ]; then
 
-            composer create-project --repository-url=https://repo.magento.com/ $COMMERCE_EDITION ./tmp
-            mv -r tmp/** .
-        else
-        composer install
-        fi
+        composer create-project --repository-url=https://repo.magento.com/ $COMMERCE_EDITION ./tmp
+        mv -r tmp/** .
+    else
+    composer install
+    fi
 
-        if [ -n "$COMPOSER_REQUIRES" ]; then
-            composer require $COMPOSER_REQUIRES
-        fi
+    if [ -n "$COMPOSER_REQUIRES" ]; then
+        composer require $COMPOSER_REQUIRES
+    fi
 
     composer install
 
