@@ -48,7 +48,7 @@ if [ "$SKIP_SETUP" != "true" ]
 then
 
 
-    if [ ! -f composer.auth ]; then
+    if [ ! -f composer.json ]; then
 
         composer create-project --repository-url=https://repo.magento.com/ $COMMERCE_EDITION ./tmp
         mv -r tmp/** .
