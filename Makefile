@@ -17,4 +17,4 @@ publish: ## publish all devcontainers
 ci: build publish ## Build and publish all devcontainers
 
 clean: ## clean filesystem
-	git clean -fdX -e .envrc src/**
+	git clean -fdX src/** -e .envrc
