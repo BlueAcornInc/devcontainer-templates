@@ -16,6 +16,8 @@ services:
       TEST_MODE: ${TEST_MODE}
       ENABLE_IMS: ${ENABLE_IMS}
       COMPOSER_AUTH: ${COMPOSER_AUTH}
+      MYSQL_IMPORT: ${MYSQL_IMPORT}
+      MARIADB_MYSQL_LOCALHOST_GRANTS: "ALL PRIVILEGES"
   db:
     image: ${MYSQL_IMAGE}
     volumes:

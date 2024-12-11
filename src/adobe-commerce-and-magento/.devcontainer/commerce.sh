@@ -65,6 +65,14 @@ then
     if [ ! -f app/etc/env.php ]
         then
 
+        if [ -n "$MYSQL_DUMP_FILE" ]; then
+            echo "Importing MySQL dump file: $MYSQL_DUMP_FILE"
+            mysql -h 127.0.0.1 -u magento -pmagento magento < "$MYSQL_DUMP_FILE"
+        else
+            echo "MYSQL_IMPORT is true but MYSQL_DUMP_FILE is not set."
+            exit 1
+        fi
+
         INSTALL="true"
         bin/magento setup:install \
             --backend-frontname=backend \
